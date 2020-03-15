@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>教员库</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+
+		<script type="text/javascript" src="../../js/jquery3.4.1.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			/* 老师信息搜索 */
+			layui.use('table', function() {
+				var table = layui.table;
+				table.render({
+					elem: '#teacherTable',
+					toolbar: 'true',
+					url: 'http://localhost:8080/teacher/getTeacherByPage',
+					where: {
+						subject: new URLSearchParams(window.location.search).get('selectSubject'),
+						gender: new URLSearchParams(window.location.search).get('selectGender'),
+						degree: new URLSearchParams(window.location.search).get('selectIdentity')
+					},
+					title: '教员信息列表',
+					width: 1450,
+					page: true,
+					limits: [5, 10, 20, 40, 80, 160],
+					cols: [
+						[{
+							field: 'xuhao',
+							width: 40,
+							title: '序号',
+							type: 'numbers',
+							fixed: 'left'
+						}, {
+							field: 'trueName',
+							width: 80,
+							title: '姓名'
+						}, {
+							field: 'certification',
+							width: 110,
+							title: '实名认证',
+							sort: true,
+							templet: function(d) {
+								var tem = d.certification;
+								if (tem == '0') {
+									return '未实名';
+								} else {
+									return '已实名';
+								}
+							}
+						}, {
+							field: 'number',
+							width: 100,
+							title: '编号',
+							sort: true
+						}, {
+							field: 'birth',
+							width: 110,
+							title: '出生年月',
+							sort: true
+						}, {
+							field: 'gender',
+							width: 80,
+							title: '性别',
+							sort: true
+						}, {
+							field: 'degree',
+							width: 60,
+							title: '学位'
+						}, {
+							field: 'university',
+							width: 130,
+							title: '就读大学',
+							sort: true
+						}, {
+							field: 'major',
+							width: 130,
+							title: '专业'
+						}, {
+							field: 'subject',
+							title: '教授科目',
+							width: 110
+						}, {
+							field: 'graduate',
+							width: 110,
+							title: '是否毕业',
+							sort: true,
+							templet: function(d) {
+								var tem = d.graduate;
+								if (tem == '0') {
+									return '未毕业';
+								} else {
+									return '已毕业';
+								}
+							}
+						}, {
+							field: 'qq',
+							width: 120,
+							title: 'qq'
+						}, {
+							field: 'tel',
+							width: 120,
+							title: '电话'
+						}, {
+							field: 'city',
+							width: 110,
+							title: '所在城市',
+							sort: true
+						}, {
+							field: 'tutorMode',
+							width: 110,
+							title: '授课模式',
+							sort: true
+						}, {
+							field: 'creditScore',
+							width: 90,
+							title: '信誉分',
+							sort: true
+						}, {
+							field: 'charge',
+							width: 130,
+							title: '收费标准',
+							sort: true
+						}, {
+							field: 'cases',
+							width: 250,
+							title: '授课学员反馈'
+						}, {
+							field: 'selfAssessment',
+							width: 250,
+							title: '自我介绍'
+						}]
+					]
+				});
+			});
+			
+		</script>
+	</head>
+	<body>
+		<header class="container">
+			<img src="../../img/teacher_bg.png" />
+		</header>
+		<div class="container-fluid">
+			<table id="teacherTable"></table>
+		</div>
+	</body>
+</html>
