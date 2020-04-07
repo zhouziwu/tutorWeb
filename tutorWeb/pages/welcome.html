@@ -23,7 +23,6 @@
 			layui.use(['carousel', 'form'], function() {
 				var carousel = layui.carousel,
 					form = layui.form;
-
 				//图片轮播
 				carousel.render({
 					elem: '#test10',
@@ -31,7 +30,6 @@
 					height: '400px',
 					interval: 3000
 				});
-
 				var $ = layui.$,
 					active = {
 						set: function(othis) {
@@ -43,7 +41,6 @@
 							ins3.reload(options);
 						}
 					};
-
 				//监听开关
 				form.on('switch(autoplay)', function() {
 					ins3.reload({

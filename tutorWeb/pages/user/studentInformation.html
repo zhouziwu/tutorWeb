@@ -90,7 +90,7 @@
 						username: localStorage.getItem("tutor")
 					},
 					function(result) {
-						if (result != null) {
+						if (result != null && result != "") {
 							$("#showImg").attr("src", "../../" + result);
 						}
 					}

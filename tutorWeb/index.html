@@ -94,13 +94,13 @@
 				$("#qingjiajiao").click(function() {
 					$("#myIframe").attr({
 						src: "pages/navbar/qingjiajiao.html",
-						height: "400"
+						height: "1110"
 					});
 				});
 				$("#zuojiajiao").click(function() {
 					$("#myIframe").attr({
 						src: "pages/navbar/zuojiajiao.html",
-						height: "400"
+						height: "600"
 					});
 				});
 				$("#xueyuanku").click(function() {
@@ -118,6 +118,12 @@
 				$("#youzhijiaoyuan").click(function() {
 					$("#myIframe").attr({
 						src: "pages/navbar/youzhijiaoyuan.html",
+						height: "601"
+					});
+				});
+				$("#xinxiku").click(function() {
+					$("#myIframe").attr({
+						src: "pages/navbar/xinxiku.html",
 						height: "601"
 					});
 				});
@@ -167,9 +173,9 @@
 						},
 						function(res) {
 							if (res.all.certification == "1") {
-								layer.msg("已实名认证!", {
-									icon: 6,
-									time: 3000
+								layer.alert('已实名认证!', {
+								  skin: 'layui-layer-molv' //样式类名
+								  ,closeBtn: 0
 								});
 							} else {
 								window.location.href = "pages/user/certification.html";
@@ -211,7 +217,7 @@
 							username: loginStr
 						},
 						function(result) {
-							if (result != null) {
+							if (result != null && result != "") {
 								$("#headImg").attr("src", result);
 							}
 						}
@@ -268,7 +274,7 @@
 											username: localStorage.getItem("tutor")
 										},
 										function(result) {
-											if (result != null) {
+											if (result != null && result != "") {
 												$("#headImg").attr("src", result);
 											}
 										}
@@ -637,7 +643,7 @@
 			}
 			/* 表单重置 */
 			function reset() {
-				$("#loginForm,#studentRegisterForm,#teacherRegisterForm,#parentRegisterForm,#questionForm,#forgetForm")
+				$("#loginForm,#studentRegisterForm,#teacherRegisterForm,#parentRegisterForm,#questionForm")
 					.find('input[type=text],input[type=password],input[type=email],select').each(function() {
 						$(this).val('');
 					});
@@ -764,7 +770,6 @@
 									</div>
 									<div class="layui-form-item" align="center">
 										<a class="layui-btn" href="javascript:modifyPwd()">修改</a>
-										<a class="layui-btn layui-btn-normal" href="javascript:reset()">重置</a>
 									</div>
 								</form>
 							</div>
@@ -1142,6 +1147,9 @@
 							<a id="youzhijiaoyuan">优质教员</a>
 						</li>
 						<li class="layui-nav-item">
+							<a id="xinxiku">家教信息库</a>
+						</li>
+						<li class="layui-nav-item">
 							<a id="zifeizhongxin">资费中心</a>
 						</li>
 					</ul>
@@ -1158,7 +1166,7 @@
 		<div class="container-fluid myfooter">
 			<div>
 				友情链接：
-				<a href="http://tjs.zhishanshi.com/" target="_blank" style="color: #E2E2E2;text-decoration: none;">知善师家教</a>
+				<a href="https://www.baidu.com/" target="_blank" style="color: #E2E2E2;text-decoration: none;">百度</a>
 				<hr style="background: #8C8C8C;height: 1px;border: none;" />
 			</div>
 			©大学生家教

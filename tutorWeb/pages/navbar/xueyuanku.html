@@ -13,6 +13,12 @@
 		<script type="text/javascript" src="../../js/jquery3.4.1.js"></script>
 		<script type="text/javascript" src="../../layui/layui.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+		
+		<style type="text/css">
+			body {
+				background-color: #EEEEEE;
+			}
+		</style>
 
 		<script type="text/javascript">
 			/* 学员信息搜索 */
@@ -22,7 +28,7 @@
 					elem: '#studentTable',
 					toolbar: 'true',
 					url: 'http://localhost:8080/student/getStudentByPage',
-					title: '教员信息列表',
+					title: '学员信息列表',
 					width: 1450,
 					page: true,
 					limits: [5, 10, 20, 40, 80, 160],

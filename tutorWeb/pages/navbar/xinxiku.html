@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>家教信息库</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+
+		<script type="text/javascript" src="../../js/jquery3.4.1.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+
+		<style type="text/css">
+			body {
+				background-color: #EEEEEE;
+			}
+		</style>
+
+		<script type="text/html" id="barHandle">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">申请此订单</a>
+		</script>
+
+		<script type="text/javascript">
+			/* 家教信息搜索 */
+			layui.use('table', function() {
+				var table = layui.table;
+				table.render({
+					elem: '#studentTable',
+					toolbar: 'true',
+					url: 'http://localhost:8080/order/getOrderByPage',
+					title: '家教信息列表',
+					width: 1450,
+					page: true,
+					limits: [5, 10, 20, 40, 80, 160],
+					cols: [
+						[{
+							field: 'xuhao',
+							width: 40,
+							title: '序号',
+							type: 'numbers',
+							fixed: 'left'
+						}, {
+							field: 'name',
+							width: 100,
+							title: '联系人'
+						}, {
+							field: 'tel',
+							width: 120,
+							title: '联系电话',
+							templet: function(d) {
+								var reg = /^(\d{3})\d*(\d{4})$/;
+								var str = d.tel.replace(reg,'$1****$2');
+								return str;
+							}
+						}, {
+							field: 'qq',
+							width: 120,
+							title: '联系qq',
+							templet: function(d) {
+								var reg = /^(\d{2})\d*(\d{2})$/;
+								var str = d.qq.replace(reg,'$1****$2');
+								return str;
+							}
+						}, {
+							field: 'gender',
+							width: 80,
+							title: '性别',
+							sort: true
+						}, {
+							field: 'city',
+							width: 110,
+							title: '所在城市',
+							sort: true
+						}, {
+							field: 'address',
+							width: 120,
+							title: '上课地址'
+						}, {
+							field: 'grade',
+							width: 110,
+							title: '所读年级',
+							sort: true
+						}, {
+							field: 'subject',
+							width: 110,
+							title: '辅导科目',
+							sort: true
+						}, {
+							field: 'times',
+							width: 120,
+							title: '辅导次数/周',
+							sort: true
+						}, {
+							field: 'number',
+							width: 120,
+							title: '辅导时长/次',
+							sort: true
+						}, {
+							field: 'stuInformation',
+							width: 200,
+							title: '学员情况'
+						}, {
+							field: 'pay',
+							width: 120,
+							title: '支付报酬',
+							sort: true
+						}, {
+							fixed: 'right',
+							width: 100,
+							title: '操作',
+							toolbar: '#barHandle'
+						}]
+					]
+				});
+				//监听行工具事件
+				table.on('tool(test)', function(obj) {
+					var data = obj.data;
+					var ids = obj.data.id;
+					//console.log(obj)
+					if (obj.event === 'edit') {
+						if (localStorage.getItem("tutor") == null) {
+							layer.msg("未登录!", {
+								icon: 2,
+								time: 2000
+							});
+						} else {
+							$.get("http://localhost:8080/user/getUserByUsername", {
+								username: localStorage.getItem("tutor")
+							}, function(res) {
+								if (res.all.level == "3") {
+									$.get("http://localhost:8080/order/getState", {
+										id: ids
+									}, function(result) {
+										if (result == "未完成") {
+											layer.alert("申请成功,稍后会有工作人员联系发布方获取辅导意愿,请保持您的电话畅通,谢谢合作!");
+											$.get("http://localhost:8080/order/setState", {
+												id: ids
+											});
+										} else if (result == "已受理") {
+											layer.alert("该订单已被申请,如未成功,您可继续申请!");
+										} else {
+											layer.alert("该订单已完成,请申请其他订单");
+										}
+									});
+								} else {
+									layer.msg("只有教员才能申请家教订单!!!", {
+										icon: 5,
+										time:2000
+									});
+								}
+							});
+						}
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<header class="container">
+			<img src="../../img/order_bg.png" />
+		</header>
+		<div class="container-fluid">
+			<table id="studentTable" lay-filter="test"></table>
+		</div>
+	</body>
+</html>

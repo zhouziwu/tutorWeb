@@ -143,8 +143,9 @@
 					/*method: 'get',*/
 					done: function(res) {
 						if (!res.msg) {
-							layer.msg("上传失败", {
-								icon: 2
+							layer.alert('上传失败!请上传正确的身份证照片。', {
+							  skin: 'layui-layer-molv' //样式类名
+							  ,closeBtn: 0
 							});
 						} else {
 							layer.msg("上传成功", {
@@ -190,14 +191,14 @@
 						<div class="layui-card-body">
 							<div class="layui-form-item">
 								<div style="float: left;margin-left: 70px;margin-right: 70px;">
-									<span style="font-size: 18px;">身份证件正面照片</span>
+									<span style="font-size: 18px;">身份证国徽面照片</span>
 									<img id="show1" src="../../img/sfz1.png" class="circular" alt="加载失败" />&nbsp;&nbsp;&ensp;
 									<button id="btnImg1" type="button" class="layui-btn" style="margin-top: 5px;">
 										<i class="layui-icon">&#xe67c;</i>上传照片
 									</button>
 								</div>
 								<div>
-									<span style="font-size: 18px;">身份证件反面照片</span>
+									<span style="font-size: 18px;">身份证信息面照片</span>
 									<img id="show2" src="../../img/sfz2.png" class="circular" alt="加载失败" />&nbsp;&nbsp;&ensp;
 									<button id="btnImg2" type="button" class="layui-btn" style="margin-top: 5px;">
 										<i class="layui-icon">&#xe67c;</i>上传照片

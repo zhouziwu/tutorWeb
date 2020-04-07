@@ -3,8 +3,293 @@
 	<head>
 		<meta charset="utf-8">
 		<title>请家教</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		
+		<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css" />
+		
+		<script type="text/javascript" src="../../js/jquery3.4.1.js"></script>
+		<script type="text/javascript" src="../../layui/layui.all.js"></script>
+		<script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+		
+		<style type="text/css">
+			body {
+				background-color: #EEEEEE;
+			}
+			.pointer:hover {
+				cursor: pointer;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			$(function() {
+				$("#salary").click(function() {
+					window.open("zifeizhongxin.html");
+				});
+			});
+			/*layui弹出消息*/
+			function tips(a, b, c) {
+				layer.tips(a, b, {
+					tips: [c, '#FF0000'],
+					time: 3000
+				});
+			}
+			
+			function publish() {
+				if (localStorage.getItem("tutor") == null) {
+					layer.msg("未登录!请登录后再发布", {
+						icon: 5,
+						time: 2500
+					});
+				}
+				var name = $("#name").val();
+				if (name.length == 0 || name.length > 10) {
+					tips("请规范填写!", "#name", 2);
+					return;
+				}
+				var tel = $("#tel").val();
+				if (!(/^1[34578]\d{9}$/.test(tel))) {
+					tips("请规范填写!", "#tel", 2);
+					return;
+				}
+				var gender = $("#gender").val();
+				if (gender == null || gender.length == 0) {
+					tips("请选择你的性别!", "#gender", 2);
+					return;
+				}
+				var city = $("#city").val();
+				if (city == null || city.length == 0) {
+					tips("请选择你所在的城市!", "#city", 2);
+					return;
+				}
+				var address = $("#address").val();
+				if (address.length == 0 || address.length > 50) {
+					if (address.length == 0) {
+						tips("住址不能为空!", "#address", 2);
+					} else {
+						tips("住址填写不符合或超出长度!", "#address", 2);
+					}
+					return;
+				}
+				var grade = $("#grade").val();
+				if (grade.length == null || grade.length == 0) {
+					tips("请规范填写!", "#grade", 2);
+					return;
+				}
+				var subject = $("#subject").val();
+				if (subject.length == null || subject.length == 0) {
+					tips("请规范填写!", "#subject", 2);
+					return;
+				}
+				var times = $("#times").val();
+				if (times.length == null || times.length == 0) {
+					tips("请规范填写!", "#times", 2);
+					return;
+				}
+				var number = $("#number").val();
+				if (number.length == null || number.length == 0) {
+					tips("请规范填写!", "#number", 2);
+					return;
+				}
+				var pay = $("#pay").val();
+				if (pay.length == null || pay.length == 0) {
+					tips("请规范填写!", "#pay", 2);
+					return;
+				}
+						
+				$.get("http://localhost:8080/order/saveOrder", {
+						user: localStorage.getItem("tutor"),
+						name: $("#name").val(),
+						tel: $("#tel").val(),
+						qq: $("#qq").val(),
+						gender: $("#gender").val(),
+						city: $("#city").val(),
+						address: $("#address").val(),
+						grade: $("#grade").val(),
+						subject: $("#subject").val(),
+						times: $("#times").val(),
+						number: $("#number").val(),
+						stuInformation: $("#stuInformation").val(),
+						pay: $("#pay").val()
+					},
+					function(result) {
+						if (result == "success") {
+							layer.msg("发布成功!", {
+								icon: 6,
+								time: 3000
+							}, function() {
+								window.location.href = "qingjiajiao.html";
+							});
+						} else {
+							layer.msg("发布失败！", {
+								icon: 2
+							});
+						}
+					}
+				);
+			}
+		</script>
 	</head>
 	<body>
-		请家教！！
+		<header class="container">
+			<img src="../../img/tutor_bg.png" />
+		</header>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="layui-card">
+						<div class="layui-card-body">
+							<p style="text-align: center;font-size: 22px;">请家长（学员）填写以下家教需求信息</p>
+							<p style="text-align: center;font-size: 16px;color: red;">（我们相信，每个孩子都有合适他/她的老师，我们承诺为学员免费更换教员，直到满意为止！）</p>
+						</div><hr />
+						<div class="layui-card-body" style="padding-left: 420px;">
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">联系人姓名：</span>
+								</label>
+								<input type="text" id="name" name="name" required="required" placeholder="请输入联系人姓名" autocomplete="off">
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">联系人电话：</span>
+								</label>
+								<input type="text" id="tel" name="tel" required="required" placeholder="请输入联系人电话" autocomplete="off">
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: green;">联系人QQ：</span>
+								</label>
+								<input type="text" id="qq" name="qq" required="required" placeholder="请输入联系人QQ" autocomplete="off">
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">学员性别：</span>
+								</label>
+								<select id="gender" name="gender" class="layui-form-select" style="height: 27px;" lay-verify="required">
+									<option value="男" selected="selected">男</option>
+									<option value="女">女</option>
+									<option value="秘密">秘密</option>
+								</select>
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">所在城市：</span>
+								</label>
+								<select id="city" name="city" class="layui-form-select" style="height: 27px;" lay-verify="required">
+									<option value="北京" selected="selected">北京</option>
+									<option value="上海">上海</option>
+									<option value="广州">广州</option>
+									<option value="深圳">深圳</option>
+									<option value="杭州">杭州</option>
+									<option value="天津">天津</option>
+								</select>
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">上课地址：</span>
+								</label>
+								<input type="text" id="address" name="address" required="required" placeholder="仅填写**路**小区即可" autocomplete="off">
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">选择年级：</span>
+								</label>
+								<select id="grade" name="grade" class="layui-form-select" style="height: 27px;" lay-verify="required">
+									<option value="学前班" selected="selected">学前班</option>
+									<option value="一年级">一年级</option>
+									<option value="二年级">二年级</option>
+									<option value="三年级">三年级</option>
+									<option value="四年级">四年级</option>
+									<option value="五年级">五年级</option>
+									<option value="六年级">六年级</option>
+									<option value="初一">初一</option>
+									<option value="初二">初二</option>
+									<option value="初三">初三</option>
+									<option value="高一">高一</option>
+									<option value="高二">高二</option>
+									<option value="高三">高三</option>
+									<option value="艺术生">艺术生</option>
+								</select>
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">辅导科目：</span>
+								</label>
+								<select id="subject" name="subject" class="layui-form-select" style="height: 27px;" lay-verify="required">
+									<option value="语文" selected="selected">语文</option>
+									<option value="数学">数学</option>
+									<option value="英语">英语</option>
+									<option value="物理">物理</option>
+									<option value="化学">化学</option>
+									<option value="生物">生物</option>
+									<option value="地理">地理</option>
+									<option value="政治">政治</option>
+									<option value="历史">历史</option>
+								</select>
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">家教时间安排：</span>
+								</label>
+								<select id="times" name="times" class="layui-form-select" style="height: 27px;width: 50px;" lay-verify="required">
+									<option value="1" selected="selected">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+								</select>次/每周<br />
+								<select id="number" name="number" class="layui-form-select" style="height: 27px;width: 80px;margin-left: 123px;margin-top: 20px;" lay-verify="required">
+									<option value="1" selected="selected">1</option>
+									<option value="1.5">1.5</option>
+									<option value="2">2（推荐）</option>
+									<option value="2.5">2.5</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+								</select>小时/每次
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: green;">学员情况：</span>
+								</label>
+								<textarea id="stuInformation" name="stuInformation" placeholder="非必填,描述学员情况" class="layui-textarea" style="width: 450px;"></textarea>
+							</div>
+							<div class="layui-form-item" style="margin-top: 30px;">
+								<label style="width: 120px;text-align: right;">
+									<span style="color: red;font-size: 20px;">*</span><span style="color: green;">支付的报酬：</span>
+								</label>
+								<select id="pay" name="pay" class="layui-form-select" style="height: 27px;width: 80px;" lay-verify="required">
+									<option value="面议" selected="selected">面议</option>
+									<option value="40">40</option>
+									<option value="50">50</option>
+									<option value="60">60</option>
+									<option value="70">70</option>
+									<option value="80">80</option>
+									<option value="90">90</option>
+									<option value="100">100</option>
+									<option value="120">120</option>
+									<option value="140">140</option>
+									<option value="160">160</option>
+									<option value="180">180</option>
+									<option value="200">200</option>
+									<option value="250">250</option>
+									<option value="300">300</option>
+									<option value="350">350</option>
+									<option value="400">400</option>
+									<option value="450">450</option>
+									<option value="500">500</option>
+								</select>元/小时<span id="salary" class="pointer" style="color: red;">查看家教薪资参考标准</span>
+							</div>
+							<div class="layui-form-item" style="padding-left: 60px;margin-top: 30px;">
+								<a class="layui-btn" href="javascript:publish()">填写好了,立即发布</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

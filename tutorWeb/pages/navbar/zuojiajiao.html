@@ -3,8 +3,215 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>做家教</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../../css/vcode.css" />
+
+		<script type="text/javascript" src="../../js/jquery3.4.1.js"></script>
+		<script type="text/javascript" src="../../layui/layui.all.js"></script>
+		<script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../../js/vcode.js"></script>
+
+		<style type="text/css">
+			body {
+				background-color: #EEEEEE;
+			}
+		</style>
+
+		<script type="text/javascript">
+			$(function() {
+				createCode(4);
+			});
+			/*刷新验证码*/
+			function refreshVcode() {
+				createCode(4);
+			}
+			/*layui弹出消息*/
+			function tips(a, b, c) {
+				layer.tips(a, b, {
+					tips: [c, '#FF0000'],
+					time: 3000
+				});
+			}
+			/*老师注册*/
+			function teacherRegister() {
+				var tname = $("#tname").val();
+				if (tname.length == 0 || tname.length > 10) {
+					tips("用户名不能为空且不能超过10位!", "#tname", 2);
+					return;
+				}
+				var tpwd = $("#tpwd").val();
+				if (tpwd.length == 0) {
+					tips("密码不能为空!", "#tpwd", 2);
+					return;
+				}
+				if (tpwd.length < 6 || tpwd.length > 16) {
+					tips("密码长度应为6至16位!", "#tpwd", 2);
+					return;
+				}
+				var tpwd1 = $("#tpwd1").val();
+				if (tpwd1.length == 0 || tpwd1 != tpwd) {
+					if (tpwd1.length == 0) {
+						tips("重复密码不能为空!", "#tpwd1", 2);
+					} else {
+						tips("两次密码不一致!", "#tpwd1", 2);
+					}
+					return;
+				}
+				var tcity = $("#tcity").val();
+				if (tcity == null || tcity.length == 0) {
+					tips("请选择你所在的城市!", "#tcity", 2);
+					return;
+				}
+				var degree = $("#degree").val();
+				if (degree == null || degree.length == 0) {
+					tips("请选择你的最高学位!", "#degree", 2);
+					return;
+				}
+				var school = $("#university").val();
+				if (school.length == 0 || school.length > 20) {
+					if (school.length == 0) {
+						tips("请输入你最高学位学校名称!", "#unauniversityme", 2);
+					} else {
+						tips("学校名称有误或超过长度限制!", "#university", 2);
+					}
+					return;
+				}
+				var graduate = $("#graduate").val();
+				if (graduate == null || graduate.length == 0) {
+					tips("是否毕业!", "#graduate", 2);
+					return;
+				}
+				var tgender = $("#tgender").val();
+				if (tgender == null || tgender.length == 0) {
+					tips("请选择你的性别!", "#tgender", 2);
+					return;
+				}
+				var code = document.getElementById("checkCode4").innerHTML;
+				var vcode4 = $("#vcode4").val();
+				if (vcode4.length == 0) {
+					tips("验证码不能为空!", "#vcode4", 1);
+					return;
+				}
+				if (vcode4.toUpperCase() == code.toUpperCase()) {
+					$.get("http://localhost:8080/user/teacherRegister", {
+							tname: $("#tname").val(),
+							tpwd: $("#tpwd").val(),
+							tcity: $("#tcity").val(),
+							degree: $("#degree").val(),
+							university: $("#university").val(),
+							graduate: $("#graduate").val(),
+							tgender: $("#tgender").val()
+						},
+						function(result) {
+							if (result == "success") {
+								layer.msg("注册成功！请登录", {
+									icon: 1,
+									time: 2500
+								}, function() {
+									window.location.href = "zuojiajiao.html";
+								});
+							} else if (result == "用户名已存在") {
+								layer.msg("该用户名已存在！请重新输入", {
+									icon: 2
+								});
+							} else {
+								layer.msg("注册失败！", {
+									icon: 2
+								});
+							}
+						});
+				} else {
+					tips("验证码输入有误!", "#vcode4", 1);
+					return;
+				}
+			}
+			/* 表单重置 */
+			function reset() {
+				$("#loginForm")
+					.find('input[type=text],input[type=password],input[type=email],select').each(function() {
+						$(this).val('');
+					});
+			}
+		</script>
 	</head>
 	<body>
-		做家教！！
+		<header class="container">
+			<img src="../../img/tutoring_bg.png" />
+		</header>
+		<div class="container">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<!--注册-->
+					<form id="loginForm" style="margin-left: 450px;">
+						<h3 style="color: green;margin-left: 50px;">新教员注册</h3>
+						<div class="layui-form-item">
+							<label>用&ensp;户&ensp;名：</label>
+							<input type="text" id="tname" name="tname" required="required" placeholder="请输入用户名" autocomplete="off">
+						</div>
+						<div class="layui-form-item">
+							<label>密&ensp;&ensp;&ensp;&ensp;码：</label>
+							<input type="password" id="tpwd" name="tpwd" required="required" placeholder="请输入密码" autocomplete="off">
+						</div>
+						<div class="layui-form-item">
+							<label>确认密码：</label>
+							<input type="password" id="tpwd1" name="tpwd1" required="required" placeholder="请再次输入密码" autocomplete="off">
+						</div>
+						<div class="layui-form-item">
+							<label>所在城市：</label>
+							<select id="tcity" name="tcity" class="layui-form-selectup" style="height: 27px;" lay-verify="required">
+								<option value="北京" selected="selected">北京</option>
+								<option value="上海">上海</option>
+								<option value="广州">广州</option>
+								<option value="深圳">深圳</option>
+								<option value="杭州">杭州</option>
+								<option value="天津">天津</option>
+							</select>
+						</div>
+						<div class="layui-form-item">
+							<label>最高学位：</label>
+							<select id="degree" name="degree" class="layui-form-selectup" style="height: 27px;" lay-verify="required">
+								<option value="专科" selected="selected">专科</option>
+								<option value="本科">本科</option>
+								<option value="硕士">硕士</option>
+								<option value="博士">博士</option>
+							</select>
+						</div>
+						<div class="layui-form-item">
+							<label>所读学校：</label>
+							<input type="text" id="university" name="university" required="required" placeholder="最高学位所读学校" autocomplete="off">
+						</div>
+						<div class="layui-form-item">
+							<label>是否毕业：</label>
+							<select id="graduate" name="graduate" class="layui-form-selectup" style="height: 27px;" lay-verify="required">
+								<option value="1" selected="selected">已毕业</option>
+								<option value="0">未毕业</option>
+							</select>
+						</div>
+						<div class="layui-form-item">
+							<label>性&ensp;&ensp;&ensp;&ensp;别：</label>
+							<select id="tgender" name="tgender" class="layui-form-selectup" style="height: 27px;" lay-verify="required">
+								<option value="男" selected="selected">男</option>
+								<option value="女">女</option>
+								<option value="秘密">秘密</option>
+							</select>
+						</div>
+						<div class="layui-form-item">
+							<label>验&ensp;证&ensp;码：</label>
+							<input type="text" id="vcode4" name="vcode4" required="required" placeholder="请输入验证码" autocomplete="off">
+							<label id="checkCode4" onclick="refreshVcode()"></label>
+						</div>
+						<div class="layui-form-item">
+							<a class="layui-btn" href="javascript:teacherRegister()">注册</a>
+							<a class="layui-btn layui-btn-normal" href="javascript:reset()">重置</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
